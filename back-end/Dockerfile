@@ -1,17 +1,15 @@
-# Use the official Python 3.9 image as the base image
+# Use the official Python 3.9 image
 FROM python:3.9
 
-# Set the working directory inside the container
+# Set working directory
 WORKDIR /app
 
-# Copy the requirements.txt file to the container
+# Copy and install dependencies
 COPY requirements.txt .
-
-# Install Python dependencies
 RUN pip install -r requirements.txt
 
-# Copy the application code to the container
+# Copy application code
 COPY app.py .
 
-# Run the Flask application on container startup
+# Run Flask application
 CMD ["python", "app.py"]
