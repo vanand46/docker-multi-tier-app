@@ -1,1 +1,1 @@
-# sample-voting-app
+# The Application Directory as follows
