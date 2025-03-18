@@ -1,3 +1,5 @@
+# Deploying Multi-Tier Application
+This particular repo demonstrate the deployment of a multi-tier application using Docker-compose
 ### The Application Directory as follows
 ![alt text](images/image.png)
 
