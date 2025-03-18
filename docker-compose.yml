@@ -1,37 +1,42 @@
-version: '1.0'
+version: '3.8'
 
 services:
+  
+  # Frontend Service (Nginx)
   frontend:
-    build: ./front-end
+    build: ./front-end  # Builds the frontend Docker image
     ports:
-      - "8080:80"
+      - "8080:80"  # Exposes frontend on port 8080
     depends_on:
-      - backend
+      - backend  # Ensures backend service starts before frontend
     environment:
-      - BACKEND_URL=${BACKEND_URL}   
+      - BACKEND_URL=${BACKEND_URL}  # Loads backend URL from the .env file
 
+  # Backend Service
   backend:
-    build: ./back-end
+    build: ./back-end  # Builds the backend Docker image
     ports:
-      - "5000:5000"
+      - "5000:5000"  # Exposes backend on port 5000
     depends_on:
-      - database
+      - database  # Ensures database service starts before backend
     environment:
-      - DB_HOST=database
-      - DB_USER=user
-      - DB_PASSWORD=password
-      - DB_NAME=appdb
+      - DB_HOST=database  # Database service hostname
+      - DB_USER=user  # Database username
+      - DB_PASSWORD=password  # Database password
+      - DB_NAME=appdb  # Name of the database
 
+  # Database Service (MySQL)
   database:
-    image: mysql:latest
-    restart: always
+    image: mysql:latest  # Uses the official MySQL image
+    restart: always  # Ensures database restarts on failure
     environment:
-      MYSQL_ROOT_PASSWORD: rootpassword
-      MYSQL_DATABASE: appdb
-      MYSQL_USER: user
-      MYSQL_PASSWORD: password
+      MYSQL_ROOT_PASSWORD: rootpassword  # MySQL root password
+      MYSQL_DATABASE: appdb  # Creates initial database
+      MYSQL_USER: user  # MySQL user
+      MYSQL_PASSWORD: password  # MySQL user password
     ports:
-      - "3306:3306"
+      - "3306:3306"  # Exposes MySQL on port 3306
 
+# Persistent Volume for Database
 volumes:
-  db_data:                  
+  db_data:
