@@ -38,3 +38,44 @@ COPY app.py .
 # Run the Flask application on container startup
 CMD ["python", "app.py"]
 ```
+
+## Content of the docker-compose.yml of the application
+```yml
+version: '1.0'
+
+services:
+  frontend:
+    build: ./front-end
+    ports:
+      - "8080:80"
+    depends_on:
+      - backend
+    environment:
+      - BACKEND_URL=${BACKEND_URL}   
+
+  backend:
+    build: ./back-end
+    ports:
+      - "5000:5000"
+    depends_on:
+      - database
+    environment:
+      - DB_HOST=database
+      - DB_USER=user
+      - DB_PASSWORD=password
+      - DB_NAME=appdb
+
+  database:
+    image: mysql:latest
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: appdb
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+    ports:
+      - "3306:3306"
+
+volumes:
+  db_data:                  
+```
