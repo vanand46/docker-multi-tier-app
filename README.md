@@ -1,5 +1,5 @@
 ### The Application Directory as follows
-![alt text](image.png)
+![alt text](images/image.png)
 
 ### Content of the front-end Dockerfile
 ```Dockerfile
