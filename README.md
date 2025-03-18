@@ -45,7 +45,7 @@ version: '3.8'
 
 services:
   
-  # Frontend Service (Nginx)
+  # Frontend Service
   frontend:
     build: ./front-end  # Builds the frontend Docker image
     ports:
@@ -68,7 +68,7 @@ services:
       - DB_PASSWORD=password  # Database password
       - DB_NAME=appdb  # Name of the database
 
-  # Database Service (MySQL)
+  # Database Service
   database:
     image: mysql:latest  # Uses the official MySQL image
     restart: always  # Ensures database restarts on failure
