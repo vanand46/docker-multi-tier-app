@@ -4,7 +4,7 @@
 ### Content of the front-end Dockerfile
 ```Dockerfile
 ## Use a lightweight Nginx image as the base image
-FROM ngnix:alpine
+FROM nginx:alpine
 
 # Copy the frontend HTML file to the Nginx web server directory
 COPY index.html /usr/share/ngnix/html/
@@ -41,7 +41,7 @@ CMD ["python", "app.py"]
 
 ## Content of the docker-compose.yml of the application
 ```yml
-version: '3.8'
+version: '1.0'
 
 services:
   

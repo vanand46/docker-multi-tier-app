@@ -1,5 +1,5 @@
 # Use a lightweight Nginx image as the base image
-FROM ngnix:alpine
+FROM nginx:alpine
 
 # Copy the frontend HTML file to the Nginx web server directory
 COPY index.html /usr/share/ngnix/html/
