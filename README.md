@@ -46,19 +46,21 @@ $ cd docker-multi-tier-app/
 
 ### Create the front-end Dockerfile with following content
 ```Dockerfile
-## Use a lightweight Nginx image as the base image
-FROM nginx:alpine
+# Use Apache as the base image
+FROM httpd:2.4-alpine
 
-# Copy the frontend HTML file to the Nginx web server directory
-COPY index.html /usr/share/ngnix/html/
+# Copy frontend files to the Apache web server directory
+COPY index.html /usr/local/apache2/htdocs/
+COPY app.js /usr/local/apache2/htdocs/
 
-# Copy the frontend JavaScript file to the Nginx web server directory
-COPY app.js /usr/share/ngnix/html/ 
+# Modify Apache configuration to listen on port 8080
+RUN sed -i 's/Listen 80/Listen 8080/g' /usr/local/apache2/conf/httpd.conf
 
-# Inject environment variables at runtime using envsubst
-COPY env.template.js /usr/share/nginx/html/env.js
+# Expose port 8080
+EXPOSE 8080
 
-CMD ["/bin/sh", "-c", "envsubst < /usr/share/nginx/html/env.js > /usr/share/nginx/html/env.js && exec nginx -g 'daemon off;'"]
+# Start Apache in the foreground
+CMD ["httpd", "-D", "FOREGROUND"]
 ```
 
 ### Create the back-end Dockerfile with following content
@@ -84,19 +86,17 @@ CMD ["python", "app.py"]
 
 ### Create the docker-compose.yml of the application with the following content
 ```yml
-version: '1.0'
+# docker-compose.yml
+version: '3.8'
 
 services:
-  
   # Frontend Service
   frontend:
     build: ./front-end  # Builds the frontend Docker image
     ports:
-      - "8080:80"  # Exposes frontend on port 8080
+      - "8080:8080"  # Exposes frontend on port 8080
     depends_on:
       - backend  # Ensures backend service starts before frontend
-    environment:
-      - BACKEND_URL=${BACKEND_URL}  # Loads backend URL from the .env file
 
   # Backend Service
   backend:
@@ -122,18 +122,29 @@ services:
       MYSQL_PASSWORD: password  # MySQL user password
     ports:
       - "3306:3306"  # Exposes MySQL on port 3306
+    volumes:
+      - db_data:/var/lib/mysql # persist the database data
 
 # Persistent Volume for Database
 volumes:
-  db_data:              
+  db_data: 
 ```
 
-## Update .env file with EC2 instance public IP
+## Update front-end/app.js file with EC2 instance public IP
 ```bash
-$ nano .env
+$ nano front-end/app.js
 ```
-```bash
-BACKEND_URL=http://18.206.205.18:5000
+```js
+document.addEventListener("DOMContentLoaded", function () {
+    const BACKEND_URL = "http://18.206.205.18:5000"; // Replace with your actual public IP
+
+    fetch(`${BACKEND_URL}/`)
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById("backend-message").innerText = data.message;
+        })
+        .catch(error => console.error("Error fetching data:", error));
+});
 ```
 
 ## Run the Docker Compose
@@ -144,3 +155,11 @@ $ sudo docker ps
 ![alt text](images/compose-1.png)
 ![alt text](images/compose-2.png)
 ![alt text](images/compose-3.png)
+
+## Deployment Results
+
+- Visit: http://18.206.205.18:8080/ to check the frontend
+![alt text](images/output-1.png)
+- Visit: http://18.206.205.18:5000/ to check the backend
+![alt text](images/output-2.png)
+
