@@ -1,4 +1,4 @@
-# Deploying Multi-Tier Application
+# Deploying Multi-Tier Application using Docker Compose
 This particular repo demonstrate the deployment of a multi-tier application using Docker-compose
 
 ## Set up an AWS EC2 Instance with Public IP
