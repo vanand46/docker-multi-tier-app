@@ -1,13 +1,20 @@
-# front-end/Dockerfile
-FROM nginx:alpine3.18
+# front-end/Dockerfile (using Apache)
+FROM httpd:2.4-alpine
 
-# Copy the frontend HTML file to the Nginx web server directory
-COPY index.html /usr/share/nginx/html/
+# Copy the frontend HTML file to the Apache web server directory
+COPY index.html /usr/local/apache2/htdocs/
 
-# Copy the frontend JavaScript file to the Nginx web server directory
-COPY app.js /usr/share/nginx/html/
+# Copy the frontend JavaScript file to the Apache web server directory
+COPY app.js /usr/local/apache2/htdocs/
 
-# Inject environment variables at runtime using envsubst
-COPY env.template.js /usr/share/nginx/html/env.js
+# Copy the env.template.js file
+COPY env.template.js /usr/local/apache2/htdocs/env.js
 
-CMD ["/bin/sh", "-c", "envsubst < /usr/share/nginx/html/env.js > /usr/share/nginx/html/env.js && exec nginx -g 'daemon off;'"]
+# Modify Apache configuration to listen on port 8080
+RUN sed -i 's/Listen 80/Listen 8080/g' /usr/local/apache2/conf/httpd.conf
+
+# Modify the default virtual host to serve from the correct directory
+RUN sed -i 's/DocumentRoot "\/usr\/local\/apache2\/htdocs"/DocumentRoot "\/usr\/local\/apache2\/htdocs"/' /usr/local/apache2/conf/httpd.conf
+
+# Use envsubst to inject environment variables
+CMD ["/bin/sh", "-c", "envsubst < /usr/local/apache2/htdocs/env.js > /usr/local/apache2/htdocs/env.js && httpd-foreground"]
