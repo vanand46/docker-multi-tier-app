@@ -1,6 +1,40 @@
 # Deploying Multi-Tier Application
 This particular repo demonstrate the deployment of a multi-tier application using Docker-compose
-### The Application Directory as follows
+
+## Set up an AWS EC2 Instance with Public IP
+![alt text](images/image-ec2-1.png)
+![alt text](images/ec2-2.png)
+![alt text](images/ec2-3.png)
+
+### Set up inboud rules for Web Application and API in EC2
+- 8080 for Web Application
+- 5000 for API
+![alt text](images/ec2-4.png)
+
+## Set up Docker on AWS EC2 Instance
+### SSH into EC2 Instance
+![alt text](images/setup-1.png)
+### Install Docker
+```bash
+$ sudo apt update -y
+$ sudo apt install -y docker.io docker-compose git
+$ sudo systemctl start docker
+$ sudo systemctl enable docker
+```
+![alt text](images/setup-2.png)
+![alt text](images/setup-3.png)
+![alt text](images/setup-4.png)
+![alt text](images/setup-5.png)
+![alt text](images/setup-6.png)
+
+### Verify the Docker Installation
+```bash
+$ docker --version
+$ docker-compose --version
+```
+
+
+## The Application Directory as follows
 ![alt text](images/image.png)
 
 ### Content of the front-end Dockerfile
