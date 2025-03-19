@@ -16,5 +16,8 @@ RUN sed -i 's/Listen 80/Listen 8080/g' /usr/local/apache2/conf/httpd.conf
 # Modify the default virtual host to serve from the correct directory
 RUN sed -i 's/DocumentRoot "\/usr\/local\/apache2\/htdocs"/DocumentRoot "\/usr\/local\/apache2\/htdocs"/' /usr/local/apache2/conf/httpd.conf
 
+# Install gettext package
+RUN apk add --no-cache gettext
+
 # Use envsubst to inject environment variables
 CMD ["/bin/sh", "-c", "envsubst < /usr/local/apache2/htdocs/env.js > /usr/local/apache2/htdocs/env.js && httpd-foreground"]
