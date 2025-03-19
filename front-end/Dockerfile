@@ -1,11 +1,11 @@
-# Use a lightweight Nginx image as the base image
-FROM nginx:alpine
+# front-end/Dockerfile
+FROM nginx:alpine3.18
 
 # Copy the frontend HTML file to the Nginx web server directory
-COPY index.html /usr/share/ngnix/html/
+COPY index.html /usr/share/nginx/html/
 
 # Copy the frontend JavaScript file to the Nginx web server directory
-COPY app.js /usr/share/ngnix/html/ 
+COPY app.js /usr/share/nginx/html/
 
 # Inject environment variables at runtime using envsubst
 COPY env.template.js /usr/share/nginx/html/env.js

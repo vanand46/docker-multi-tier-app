@@ -33,11 +33,18 @@ $ docker --version
 $ docker-compose --version
 ```
 
+## Clone the Application Repo
+```bash
+$ git clone https://github.com/vanand46/docker-multi-tier-app.git
+$ cd docker-multi-tier-app/
+```
+![alt text](images/repo-1.png)
 
-## The Application Directory as follows
+
+## The Application Directory structure as follows
 ![alt text](images/image.png)
 
-### Content of the front-end Dockerfile
+### Create the front-end Dockerfile with following content
 ```Dockerfile
 ## Use a lightweight Nginx image as the base image
 FROM nginx:alpine
@@ -54,7 +61,7 @@ COPY env.template.js /usr/share/nginx/html/env.js
 CMD ["/bin/sh", "-c", "envsubst < /usr/share/nginx/html/env.js > /usr/share/nginx/html/env.js && exec nginx -g 'daemon off;'"]
 ```
 
-## Content of the back-end Dockerfile
+### Create the back-end Dockerfile with following content
 ```Dockerfile
 # Use the official Python 3.9 image as the base image
 FROM python:3.9
@@ -75,7 +82,7 @@ COPY app.py .
 CMD ["python", "app.py"]
 ```
 
-## Content of the docker-compose.yml of the application
+### Create the docker-compose.yml of the application with the following content
 ```yml
 version: '1.0'
 
@@ -118,6 +125,22 @@ services:
 
 # Persistent Volume for Database
 volumes:
-  db_data:
-                  
+  db_data:              
 ```
+
+## Update .env file with EC2 instance public IP
+```bash
+$ nano .env
+```
+```bash
+BACKEND_URL=http://18.206.205.18:5000
+```
+
+## Run the Docker Compose
+```bash
+$ sudo docker-compose up -d 
+$ sudo docker ps
+```
+![alt text](images/compose-1.png)
+![alt text](images/compose-2.png)
+![alt text](images/compose-3.png)
