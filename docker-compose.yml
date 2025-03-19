@@ -6,7 +6,7 @@ services:
   frontend:
     build: ./front-end  # Builds the frontend Docker image
     ports:
-      - "8080:80"  # Exposes frontend on port 8080
+      - "8080:8080"  # Exposes frontend on port 8080
     depends_on:
       - backend  # Ensures backend service starts before frontend
     environment:

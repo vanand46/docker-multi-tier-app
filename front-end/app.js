@@ -1,14 +1,10 @@
 document.addEventListener("DOMContentLoaded", function () {
-    fetch("env.js")
-        .then(response => response.text())
+    const BACKEND_URL = "http://YOUR_PUBLIC_IP:5000"; // Replace with your actual public IP
+
+    fetch(`${BACKEND_URL}/`)
+        .then(response => response.json())
         .then(data => {
-            eval(data); // Inject window.BACKEND_URL
-            fetch(`${window.BACKEND_URL}/`)
-                .then(response => response.json())
-                .then(data => {
-                    document.getElementById("backend-message").innerText = data.message;
-                })
-                .catch(error => console.error("Error fetching data:", error));
+            document.getElementById("backend-message").innerText = data.message;
         })
-        .catch(error => console.error("Error loading env.js:", error));
+        .catch(error => console.error("Error fetching data:", error));
 });
