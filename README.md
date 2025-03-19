@@ -1,5 +1,14 @@
 # Deploying Multi-Tier Application using Docker Compose
-This particular repo demonstrate the deployment of a multi-tier application using Docker-compose
+This repository demonstrates how to deploy a multi-tier web application using Docker Compose on an Amazon Web Services (AWS) EC2 instance. 
+The application consists of a frontend (Apache web server), a backend (Python Flask API), and a database (MySQL).
+
+## Overview
+This setup provides a practical example of containerizing and deploying a typical web application architecture. 
+Docker Compose simplifies the process of managing multiple Docker containers and their dependencies, making it easy to deploy the entire application stack as a single unit.
+
+## Prerequisites
+* **AWS Account:** You need an AWS account to create an EC2 instance.
+* **Basic Docker Knowledge:** Familiarity with Docker concepts like images, containers, and Docker Compose is helpful.
 
 ## Set up an AWS EC2 Instance with Public IP
 ![alt text](images/image-ec2-1.png)
